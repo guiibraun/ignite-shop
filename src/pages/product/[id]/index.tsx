@@ -1,6 +1,8 @@
+import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/future/image"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import Stripe from "stripe"
 import { stripe } from "../../../lib/stripe"
 import { ImageContainer, ProductContainer, ProductDetails } from "../../../styles/pages/product"
@@ -11,11 +13,35 @@ interface ProductProps {
         description: string
         name: string,
         imageUrl: string,
-        price: string
+        price: string,
+        defaultPriceId: string
     }
 }
 
 export default function Product({ product }: ProductProps) {
+    const [isCreatingCheckout, setIsCreatingCheckout] = useState(false)
+    const { isFallback, push } = useRouter()
+
+    if (isFallback) {
+        return <p>Loading</p>
+    }
+
+    async function handleByProduct() {
+        try {
+            setIsCreatingCheckout(true)
+            const response = await axios.post('/api/checkout', {
+                priceId: product.defaultPriceId
+            })
+            const {checkoutUrl} = response.data
+            window.location.href = checkoutUrl
+
+        } catch (error) {
+            // Conectar com uma ferramenta de observabilidade (Datalog/Sentry)
+            setIsCreatingCheckout(false)
+            alert('Falha redirecionar ao checkoyt')
+        }
+    }
+
     return (
         <ProductContainer>
             <ImageContainer>
@@ -26,18 +52,20 @@ export default function Product({ product }: ProductProps) {
                 <span>{product.price}</span>
 
                 <p>{product.description}</p>
-                <button>Comprar agora</button>
+                <button onClick={handleByProduct} disabled={isCreatingCheckout}>Comprar agora</button>
             </ProductDetails>
         </ProductContainer>
     )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+    const response = await stripe.products.list()
+
     return {
         paths: [
-            { params: { id: 'prod_MfoCzL4YD45J5g'}}
+            { params: { id: 'prod_MfoCzL4YD45J5g' } }
         ],
-        fallback: false
+        fallback: true
     }
 }
 
@@ -61,6 +89,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
                     style: 'currency',
                     currency: 'BRL'
                 }).format(price.unit_amount / 100),
+                defaultPriceId: price.id
             }
         },
         revalidate: 60 * 60 * 1 //1 hour
