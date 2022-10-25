@@ -20,7 +20,7 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
     const [isCreatingCheckout, setIsCreatingCheckout] = useState(false)
-    const { isFallback, push } = useRouter()
+    const { isFallback } = useRouter()
 
     if (isFallback) {
         return <p>Loading</p>
@@ -32,13 +32,15 @@ export default function Product({ product }: ProductProps) {
             const response = await axios.post('/api/checkout', {
                 priceId: product.defaultPriceId
             })
-            const {checkoutUrl} = response.data
+            console.log(response)
+            const { checkoutUrl } = response.data
             window.location.href = checkoutUrl
 
         } catch (error) {
             // Conectar com uma ferramenta de observabilidade (Datalog/Sentry)
             setIsCreatingCheckout(false)
-            alert('Falha redirecionar ao checkoyt')
+            console.log(error)
+            alert('Falha redirecionar ao checkout')
         }
     }
 
@@ -59,8 +61,6 @@ export default function Product({ product }: ProductProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const response = await stripe.products.list()
-
     return {
         paths: [
             { params: { id: 'prod_MfoCzL4YD45J5g' } }
