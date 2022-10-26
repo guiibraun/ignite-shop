@@ -20,16 +20,15 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-    const [isCreatingCheckout, setIsCreatingCheckout] = useState(false)
+    const { cartDetails } = useShoppingCart()
     const { isFallback } = useRouter()
-    const {addItem } = useShoppingCart()
+    const { addItem } = useShoppingCart()
 
     if (isFallback) {
         return <p>Loading</p>
     }
 
-    function handleByProduct() {
-        console.log(product.price)
+    async function handleByProduct() {
         addItem({
             name: product.name,
             id: product.id,
@@ -38,21 +37,21 @@ export default function Product({ product }: ProductProps) {
             currency: 'BRL',
             image: product.imageUrl,
         })
-        /* try {
-            setIsCreatingCheckout(true)
-            const response = await axios.post('/api/checkout', {
-                priceId: product.defaultPriceId
-            })
-            console.log(response)
-            const { checkoutUrl } = response.data
-            window.location.href = checkoutUrl
-
-        } catch (error) {
-            // Conectar com uma ferramenta de observabilidade (Datalog/Sentry)
-            setIsCreatingCheckout(false)
-            console.log(error)
-            alert('Falha redirecionar ao checkout')
-        } */
+        /*          try {
+                    setIsCreatingCheckout(true)
+                    const response = await axios.post('/api/checkout', {
+                        priceId: product.defaultPriceId
+                    })
+                    console.log(response)
+                    const { checkoutUrl } = response.data
+                    window.location.href = checkoutUrl
+        
+                } catch (error) {
+                    // Conectar com uma ferramenta de observabilidade (Datalog/Sentry)
+                    setIsCreatingCheckout(false)
+                    console.log(error)
+                    alert('Falha redirecionar ao checkout')
+                }  */
     }
 
     return (
@@ -68,7 +67,7 @@ export default function Product({ product }: ProductProps) {
                 }).format(product.price)}</span>
 
                 <p>{product.description}</p>
-                <button onClick={handleByProduct} disabled={isCreatingCheckout}>Comprar agora</button>
+                <button onClick={handleByProduct}>Comprar agora</button>
             </ProductDetails>
         </ProductContainer>
     )

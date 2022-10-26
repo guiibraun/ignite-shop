@@ -10,8 +10,18 @@ import { CartClose, CartContent, CartInfos, CartItems, CartItemsContent, CartOve
 export function CartModal() {
     const { cartDetails, cartCount, totalPrice, removeItem } = useShoppingCart()
 
-    const cartItem = Object.entries(cartDetails)
-    console.log(cartDetails)
+
+    async function handleCheckout() {
+        try {
+            const response = await axios.post('/api/checkout', {
+                cart: ['prod_MfoCzL4YD45J5g', 'prod_MfoBGLkiS2XQxW']
+            })
+            const { checkoutUrl } = response.data
+            /* window.location.href = checkoutUrl */
+        } catch (error) {
+            alert('error')
+        }
+    }
 
     return (
         <Dialog.Portal>
@@ -26,21 +36,25 @@ export function CartModal() {
                         Sacola de compras
                     </Dialog.Title>
 
-                    {cartItem.map(cart => (
-                        <CartItems key={cart[0]}>
-                            <ImageContainer>
-                                <Image src={cart[1].image} alt='' width={110} height={120} />
-                            </ImageContainer>
-                            <CartItemsContent>
-                                <h6>{cart[1].name}</h6>
-                                <span>{new Intl.NumberFormat('pt-br', {
-                            style: 'currency',
-                            currency: 'BRL'
-                        }).format(cart[1].price)}</span>
-                                <button onClick={() => removeItem(cart[1].id)}>Remover</button>
-                            </CartItemsContent>
-                        </CartItems>
-                    ))}
+                    {Object.keys(cartDetails).map(sku => {
+                        const { name, image, price, id } = cartDetails[sku]
+
+                        return (
+                            <CartItems key={sku}>
+                                <ImageContainer>
+                                    <Image src={image} alt='' width={110} height={120} />
+                                </ImageContainer>
+                                <CartItemsContent>
+                                    <h6>{name}</h6>
+                                    <span>{new Intl.NumberFormat('pt-br', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(price)}</span>
+                                    <button onClick={() => removeItem(id)}>Remover</button>
+                                </CartItemsContent>
+                            </CartItems>
+                        )
+                    })}
                 </ItemsOnTop>
 
                 <CartInfos>
@@ -57,7 +71,7 @@ export function CartModal() {
                     </Infos>
 
 
-                    <button>Finalizar Compra</button>
+                    <button onClick={handleCheckout}>Finalizar Compra</button>
                 </CartInfos>
 
             </CartContent>
