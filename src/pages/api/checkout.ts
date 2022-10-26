@@ -3,6 +3,10 @@ import { stripe } from "../../lib/stripe";
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse){
     const { cart } = req.body
+    
+    const cartItems = cart.reduce((acc, item) => {
+
+    }, {priceId})
 
 /*     if(req.method !== 'POST'){
         return res.status(405).json({ error: 'Method not alowed' })
@@ -26,7 +30,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse){
                     currency: 'BRL',
                     
                 },
-                quantity: 1
+                quantity: 1,
 
             },
         ]

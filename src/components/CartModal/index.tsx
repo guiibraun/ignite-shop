@@ -10,11 +10,11 @@ import { CartClose, CartContent, CartInfos, CartItems, CartItemsContent, CartOve
 export function CartModal() {
     const { cartDetails, cartCount, totalPrice, removeItem } = useShoppingCart()
 
-
+    console.log(cartDetails)
     async function handleCheckout() {
         try {
             const response = await axios.post('/api/checkout', {
-                cart: ['prod_MfoCzL4YD45J5g', 'prod_MfoBGLkiS2XQxW']
+                cart: cartDetails
             })
             const { checkoutUrl } = response.data
             /* window.location.href = checkoutUrl */
