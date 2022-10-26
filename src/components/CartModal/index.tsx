@@ -1,4 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
+import axios from 'axios'
+import Image from 'next/future/image'
 import { X } from 'phosphor-react'
 
 import { useShoppingCart } from 'use-shopping-cart'
@@ -6,7 +8,10 @@ import { CartClose, CartContent, CartInfos, CartItems, CartItemsContent, CartOve
 
 
 export function CartModal() {
-    const { cartDetails, cartCount, totalPrice } = useShoppingCart()
+    const { cartDetails, cartCount, totalPrice, removeItem } = useShoppingCart()
+
+    const cartItem = Object.entries(cartDetails)
+    console.log(cartDetails)
 
     return (
         <Dialog.Portal>
@@ -21,15 +26,21 @@ export function CartModal() {
                         Sacola de compras
                     </Dialog.Title>
 
-                    <CartItems>
-                        <ImageContainer>
-                        </ImageContainer>
-                        <CartItemsContent>
-                            <h6>XXXX</h6>
-                            <span>R$ 79,90</span>
-                            <button>Remover</button>
-                        </CartItemsContent>
-                    </CartItems>
+                    {cartItem.map(cart => (
+                        <CartItems key={cart[0]}>
+                            <ImageContainer>
+                                <Image src={cart[1].image} alt='' width={110} height={120} />
+                            </ImageContainer>
+                            <CartItemsContent>
+                                <h6>{cart[1].name}</h6>
+                                <span>{new Intl.NumberFormat('pt-br', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        }).format(cart[1].price)}</span>
+                                <button onClick={() => removeItem(cart[1].id)}>Remover</button>
+                            </CartItemsContent>
+                        </CartItems>
+                    ))}
                 </ItemsOnTop>
 
                 <CartInfos>

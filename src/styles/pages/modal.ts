@@ -26,6 +26,10 @@ export const CartContent = styled(Dialog.Content, {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignContent: 'stretch',
+
+    button: {
+        cursor: 'pointer'
+    }
     
 })
 
@@ -52,7 +56,6 @@ export const CartItems = styled('div', {
     gridTemplateColumns: '94px 1fr',
     gap: '2rem',
     marginTop: '2rem',
-    
 })
 
 export const ImageContainer = styled('div', {
