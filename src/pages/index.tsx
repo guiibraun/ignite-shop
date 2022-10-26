@@ -1,4 +1,5 @@
 import type { GetStaticProps, NextPage } from 'next'
+import Head from 'next/head'
 import Image from 'next/future/image'
 import { HomeContainer, Product } from '../styles/pages/home'
 
@@ -30,6 +31,11 @@ const Home: NextPage<HomeProps> = ({ products }) => {
 
 
   return (
+    <>
+      <Head>
+        <title>Ignite shop</title>
+      </Head>
+
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map(product => {
         return (
@@ -47,6 +53,7 @@ const Home: NextPage<HomeProps> = ({ products }) => {
       })}
 
     </HomeContainer>
+    </>
   )
 }
 
