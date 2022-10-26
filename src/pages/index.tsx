@@ -36,23 +36,23 @@ const Home: NextPage<HomeProps> = ({ products }) => {
         <title>Ignite shop</title>
       </Head>
 
-    <HomeContainer ref={sliderRef} className="keen-slider">
-      {products.map(product => {
-        return (
-          <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
-            <Product className="keen-slider__slide">
-              <Image src={product.imageUrl} alt='' width={520} height={480} />
+      <HomeContainer ref={sliderRef} className="keen-slider">
+        {products.map(product => {
+          return (
+            <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
+              <Product className="keen-slider__slide">
+                <Image src={product.imageUrl} alt='' width={520} height={480} />
 
-              <footer>
-                <strong>{product.name}</strong>
-                <span>{product.price}</span>
-              </footer>
-            </Product>
-          </Link>
-        )
-      })}
+                <footer>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </footer>
+              </Product>
+            </Link>
+          )
+        })}
 
-    </HomeContainer>
+      </HomeContainer>
     </>
   )
 }
