@@ -14,10 +14,10 @@ export function CartModal() {
     async function handleCheckout() {
         try {
             const response = await axios.post('/api/checkout', {
-                cart: cartDetails
+                productId: 'price_1LwSZqLM6HwtcZ1J4D3zVJfS'
             })
             const { checkoutUrl } = response.data
-            /* window.location.href = checkoutUrl */
+            window.location.href = checkoutUrl
         } catch (error) {
             alert('error')
         }
@@ -37,7 +37,7 @@ export function CartModal() {
                     </Dialog.Title>
 
                     {Object.keys(cartDetails).map(sku => {
-                        const { name, image, price, id } = cartDetails[sku]
+                        const { name, image, price, id, quantity } = cartDetails[sku]
 
                         return (
                             <CartItems key={sku}>

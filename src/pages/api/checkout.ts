@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { stripe } from "../../lib/stripe";
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse){
-    const { cart } = req.body
+    const { productId } = req.body
     
 
 /*     if(req.method !== 'POST'){
@@ -22,11 +22,12 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse){
         mode: 'payment',
         line_items: [
             {
-                price_data: {
-                    product_data: cart,
-                    currency: 'BRL',
-                    
-                },
+                price: productId,
+                quantity: 2,
+
+            },
+            {
+                price: 'price_1LwSYsLM6HwtcZ1JJMdZHjbG',
                 quantity: 1,
 
             },
