@@ -16,7 +16,6 @@ export function CartModal() {
         try {
             const response = await axios.post('/api/checkout', {
                 cart: formatLineItems(cartDetails)
-
             })
             const { checkoutUrl } = response.data
             clearCart()
