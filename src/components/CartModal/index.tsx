@@ -12,8 +12,6 @@ export function CartModal() {
 
     const { formatLineItems } = require('use-shopping-cart/utilities')
 
-    console.log(formatLineItems(cartDetails))
-
     async function handleCheckout() {
         try {
             const response = await axios.post('/api/checkout', {
