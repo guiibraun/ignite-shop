@@ -1,9 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { stripe } from "../../lib/stripe";
 
+interface PriceType {
+    price: string,
+    quantity: number
+}
+
 export default async function handler(req: NextApiRequest, res:NextApiResponse){
-    const { productId } = req.body
-    
+    const { cart } = req.body
+
 
 /*     if(req.method !== 'POST'){
         return res.status(405).json({ error: 'Method not alowed' })
@@ -20,18 +25,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse){
         success_url: sucessUrl,
         cancel_url: cancelUrl,
         mode: 'payment',
-        line_items: [
-            {
-                price: productId,
-                quantity: 2,
-
-            },
-            {
-                price: 'price_1LwSYsLM6HwtcZ1JJMdZHjbG',
-                quantity: 1,
-
-            },
-        ]
+        line_items: cart
     })
 
     return res.status(201).json({

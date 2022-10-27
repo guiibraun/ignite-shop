@@ -10,12 +10,17 @@ import { CartClose, CartContent, CartInfos, CartItems, CartItemsContent, CartOve
 export function CartModal() {
     const { cartDetails, cartCount, totalPrice, removeItem } = useShoppingCart()
 
-    console.log(cartDetails)
+    const { formatLineItems } = require('use-shopping-cart/utilities')
+
+    console.log(formatLineItems(cartDetails))
+
     async function handleCheckout() {
         try {
             const response = await axios.post('/api/checkout', {
-                productId: 'price_1LwSZqLM6HwtcZ1J4D3zVJfS'
+                cart: formatLineItems(cartDetails)
+
             })
+            console.log(response)
             const { checkoutUrl } = response.data
             window.location.href = checkoutUrl
         } catch (error) {

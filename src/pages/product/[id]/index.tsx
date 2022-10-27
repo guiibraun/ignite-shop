@@ -20,7 +20,6 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-    const { cartDetails } = useShoppingCart()
     const { isFallback } = useRouter()
     const { addItem } = useShoppingCart()
 
@@ -31,27 +30,11 @@ export default function Product({ product }: ProductProps) {
     async function handleByProduct() {
         addItem({
             name: product.name,
-            id: product.id,
             price: product.price,
             price_id: product.defaultPriceId,
             currency: 'BRL',
             image: product.imageUrl,
         })
-        /*          try {
-                    setIsCreatingCheckout(true)
-                    const response = await axios.post('/api/checkout', {
-                        priceId: product.defaultPriceId
-                    })
-                    console.log(response)
-                    const { checkoutUrl } = response.data
-                    window.location.href = checkoutUrl
-        
-                } catch (error) {
-                    // Conectar com uma ferramenta de observabilidade (Datalog/Sentry)
-                    setIsCreatingCheckout(false)
-                    console.log(error)
-                    alert('Falha redirecionar ao checkout')
-                }  */
     }
 
     return (
