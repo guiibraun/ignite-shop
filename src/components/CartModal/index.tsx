@@ -8,7 +8,7 @@ import { CartClose, CartContent, CartInfos, CartItems, CartItemsContent, CartOve
 
 
 export function CartModal() {
-    const { cartDetails, cartCount, totalPrice, removeItem } = useShoppingCart()
+    const { cartDetails, cartCount, totalPrice, removeItem, clearCart } = useShoppingCart()
 
     const { formatLineItems } = require('use-shopping-cart/utilities')
 
@@ -18,8 +18,8 @@ export function CartModal() {
                 cart: formatLineItems(cartDetails)
 
             })
-            console.log(response)
             const { checkoutUrl } = response.data
+            clearCart()
             window.location.href = checkoutUrl
         } catch (error) {
             alert('error')
