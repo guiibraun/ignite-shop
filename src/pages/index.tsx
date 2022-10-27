@@ -9,6 +9,7 @@ import 'keen-slider/keen-slider.min.css'
 import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
 import Link from 'next/link'
+import { useShoppingCart } from 'use-shopping-cart'
 
 
 interface HomeProps {
@@ -22,6 +23,7 @@ interface HomeProps {
 
 
 const Home: NextPage<HomeProps> = ({ products }) => {
+  const { cartCount } = useShoppingCart()
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -38,6 +40,8 @@ const Home: NextPage<HomeProps> = ({ products }) => {
 
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map(product => {
+
+
           return (
             <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
               <Product className="keen-slider__slide">
@@ -51,7 +55,6 @@ const Home: NextPage<HomeProps> = ({ products }) => {
             </Link>
           )
         })}
-
       </HomeContainer>
     </>
   )
